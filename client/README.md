@@ -1,4 +1,3 @@
-
 # 🛒 Grocery Delivery Website
 
 A fully functional **Grocery Delivery Website** built using the MERN stack (MongoDB, Express, React, Node.js), with integrated Stripe payment gateway and deployed for free.
@@ -32,20 +31,23 @@ A fully functional **Grocery Delivery Website** built using the MERN stack (Mong
 
 ## 📝 Steps to Build
 
-1. **Frontend (React + Tailwind CSS)**  
-   - Create homepage, product listing, and cart UI  
+1. **Frontend (React + Tailwind CSS)**
+
+   - Create homepage, product listing, and cart UI
    - Implement user registration/login
 
-2. **Admin Panel**  
-   - Upload new grocery items  
+2. **Admin Panel**
+
+   - Upload new grocery items
    - Edit/delete products
 
-3. **Backend (Express + MongoDB)**  
-   - Create RESTful APIs for products and orders  
+3. **Backend (Express + MongoDB)**
+
+   - Create RESTful APIs for products and orders
    - Manage users and admin roles
 
-4. **Stripe Payment Integration**  
-   - Add secure checkout flow  
+4. **Stripe Payment Integration**
+   - Add secure checkout flow
    - Handle payment success and failure
 
 ## 📦 Installation
