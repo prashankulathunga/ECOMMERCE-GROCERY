@@ -8,6 +8,9 @@ import UserRoute from "./routes/UserRoute.js";
 import SellerRoute from "./routes/SellerRoute.js";
 import connectCloudinary from './configs/cloudinary.js';
 import ProductRoute from "./routes/ProductRoute.js";
+import CartRoute from "./routes/CartRoute.js";
+import AddressRoute from "./routes/AddressRoute.js";
+import OrderRoute from "./routes/OrderRoute.js";
 
 const app = express();
 dotenv.config();
@@ -42,3 +45,6 @@ app.listen(port, ()=>{
  app.use('/api/user', UserRoute);
  app.use('/api/seller', SellerRoute);
  app.use('/api/product', ProductRoute);
+ app.use('/api/update', CartRoute);
+ app.use('/api/address', AddressRoute);
+ app.use('/api/order', OrderRoute);
