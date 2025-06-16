@@ -29,7 +29,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(cors({
     origin: allowedOrigins,
-    Credential: true
+    credentials: true
 }));
 
 
@@ -41,7 +41,7 @@ app.listen(port, ()=>{
     console.log(`Server is running on http://localhost:${port}`);
 })
 
- // router 
+ // router connections
  app.use('/api/user', UserRoute);
  app.use('/api/seller', SellerRoute);
  app.use('/api/product', ProductRoute);

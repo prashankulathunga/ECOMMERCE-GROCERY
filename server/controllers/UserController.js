@@ -82,6 +82,7 @@ export const login = async (req, res) => {
     });
 
     return res.status(200).json({
+      success: true,
       name: user.name,
       email: user.email,
     });

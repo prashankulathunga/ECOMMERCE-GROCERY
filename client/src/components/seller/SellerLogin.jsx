@@ -1,20 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 function SellerLogin() {
-  const { isSeller, setIsSeller, navigate } = useAppContext();
+  const { isSeller, setIsSeller, navigate, axios } = useAppContext();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // seller is authenticated
+
+  const sellerAuth = async () => {
+    try {
+      const { data } = await axios.get("/seller/is-auth");
+
+      if (data.success) {
+        setIsSeller(true);
+      } else {
+        setIsSeller(false);
+      }
+    } catch (error) {
+      console.log(error.message);
+      setIsSeller(false);
+    }
+  };
 
   useEffect(() => {
     if (isSeller) {
       navigate("/seller");
     }
+    sellerAuth();
   }, [isSeller]);
 
-  const onSubmitHandler = async () => {
-    setIsSeller(true);
+  const onSubmitHandler = async (e) => {
+    try {
+      e.preventDefault();
+
+      const { data } = await axios.post("/seller/login", {
+        email,
+        password,
+      });
+
+      if (data.success) {
+        setIsSeller(true);
+        navigate("/seller");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error.message);
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -30,7 +66,9 @@ function SellerLogin() {
             </p>
             <div className="w-full">
               <p>Email</p>
-              <input onChange={(e)=>setEmail(e.target.value)} value={email}
+              <input
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
                 type="email"
                 placeholder="enter your email"
                 className="border border-gray-100 rounded w-full p-2 mt-1 outline-primary"
@@ -39,14 +77,19 @@ function SellerLogin() {
             </div>
             <div className="w-full">
               <p>Password</p>
-              <input onChange={(e)=>setPassword(e.target.value)} value={password}
+              <input
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
                 type="password"
                 placeholder="enter your password"
                 className="border border-gray-100 rounded w-full p-2 mt-1 outline-primary"
                 required
               />
             </div>
-            <button type="submit" className="bg-primary text-white w-full py-2 rounded-md cursor-pointer hover:bg-primary-dull">
+            <button
+              type="submit"
+              className="bg-primary text-white w-full py-2 rounded-md cursor-pointer hover:bg-primary-dull"
+            >
               Login
             </button>
           </div>

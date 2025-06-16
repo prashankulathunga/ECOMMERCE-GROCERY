@@ -1,22 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
+import toast from "react-hot-toast";
 const AuthForm = () => {
     const [state, setState] = React.useState("login");
     const [name, setName] = React.useState("");
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
 
-    const {setShowUserLogin, setUser} = useAppContext();
+    const {setShowUserLogin, setUser, axios} = useAppContext();
 
-    const handleOnSubmit = (e) => {
-        e.preventDefault();
-        setUser({
-            email:"test@example.com",
-            name:"Test User"
-        })
+    const handleOnSubmit = async(e) => {
+        try {
+            e.preventDefault();
+            const {data} = await axios.post('/user/login', {email, password});
+            console.log("This is a bug fix test", data);
 
-        setShowUserLogin(false);
+            if(data.success){
+                setUser(data);
+                setShowUserLogin(false);
+                toast.success('Login Successfully');
+                console.log(data);
+            }
+
+        } catch (error) {
+            console.log(error.message);
+        }
     }
 
     return (
@@ -48,7 +57,7 @@ const AuthForm = () => {
                     Create an account? <span onClick={() => setState("register")} className="text-primary cursor-pointer">click here</span>
                 </p>
             )}
-            <button className="bg-primary hover:bg-primary-dull transition-all text-white w-full py-2 rounded-md cursor-pointer">
+            <button type='submit' className="bg-primary hover:bg-primary-dull transition-all text-white w-full py-2 rounded-md cursor-pointer">
                 {state === "register" ? "Create Account" : "Login"}
             </button>
         </form>

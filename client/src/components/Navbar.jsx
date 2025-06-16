@@ -6,11 +6,18 @@ import { useAppContext } from "../context/AppContext";
 function Navbar() {
   const [open, setOpen] = React.useState(false);
 
-  const { user, setUser, navigate, setShowUserLogin, setSearchQuery, searchQuery, getCartCount} = useAppContext();
+  const { user, setUser, navigate, setShowUserLogin, setSearchQuery, searchQuery, getCartCount, axios} = useAppContext();
 
   const logout = async ()=>{
-    setUser(null);
-    navigate("/");
+    try {
+      const {data} = await axios.get('/user/logout');
+      if(data.success){
+        setUser(null);
+        navigate('/');
+      }
+    } catch (error) {
+      console.log(error.message)
+    }
   }
 
   useEffect(()=>{
