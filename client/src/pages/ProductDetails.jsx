@@ -39,8 +39,8 @@ const ProductDetails = () => {
       {singleProduct && (
         <div className="max-w-6xl w-full px-6 mt-8 md:mt-16">
           <p>
-            <Link to={"/"}>Home</Link> /<Link to={"/product"}> Products</Link> /
-            <Link to={`/product/${singleProduct.category.toLowerCase()}`}>
+            <Link className="hover:text-primary" to={"/"}>Home</Link> /<Link className="hover:text-primary" to={"/product"}> Products</Link> /
+            <Link className="hover:text-primary" to={`/product/${singleProduct.category.toLowerCase()}`}>
               {" "}
               {singleProduct.category}
             </Link>{" "}

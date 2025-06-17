@@ -19,8 +19,10 @@ const AuthForm = () => {
             if(data.success){
                 setUser(data);
                 setShowUserLogin(false);
-                toast.success('Login Successfully');
+                toast.success('Successfully login');
                 console.log(data);
+            }else{
+                toast.error(data.message);
             }
 
         } catch (error) {

@@ -18,7 +18,7 @@ export const addProduct = async (req, res) => {
 
     await Product.create({
       ...productData,
-      images: imagesUrl,
+      image: imagesUrl,
     });
 
     return res

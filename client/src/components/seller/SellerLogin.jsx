@@ -44,6 +44,8 @@ function SellerLogin() {
       if (data.success) {
         setIsSeller(true);
         navigate("/seller");
+        toast.success("Successfully login");
+        console.log(data);
       } else {
         toast.error(data.message);
       }

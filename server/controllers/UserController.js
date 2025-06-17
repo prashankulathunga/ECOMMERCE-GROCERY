@@ -49,14 +49,12 @@ export const login = async (req, res) => {
 
     if (!email || !password) {
       return res
-        .status(400)
         .json({ success: false, message: "Email and password are required" });
     }
 
     const user = await User.findOne({ email });
     if (!user) {
       return res
-        .status(404)
         .json({
           success: false,
           message: "User not fount please register first",
@@ -66,7 +64,6 @@ export const login = async (req, res) => {
     const isMatchPassword = await bcrypt.compare(password, user.password); // isMatchPassword
     if (!isMatchPassword) {
       return res
-        .status(400)
         .json({ success: false, message: "Invalid password" });
     }
 
