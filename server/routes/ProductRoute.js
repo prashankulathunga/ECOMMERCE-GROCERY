@@ -8,6 +8,6 @@ const router = express.Router();
 router.post('/add', upload.array("images"), authSeller, addProduct);
 router.get('/list', getProducts);
 router.get('/id', productById);
-router.get('/stock', authSeller, changeStoke);
+router.post('/stock', authSeller, changeStoke);
 
 export default router;

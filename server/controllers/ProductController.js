@@ -60,7 +60,7 @@ export const productById = async (req, res) => {
 export const changeStoke = async (req, res) => {
   try {
     const { id, inStock } = req.body;
-    await Product.findByIdAndUpdate(id, { inStock });
+    await Product.findByIdAndUpdate(id, { inStock }, {new:true});
     return res
       .status(200)
       .json({ success: true, message: "Stock updated successfully" });

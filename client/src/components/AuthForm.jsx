@@ -13,7 +13,7 @@ const AuthForm = () => {
     const handleOnSubmit = async(e) => {
         try {
             e.preventDefault();
-            const {data} = await axios.post('/user/login', {email, password});
+            const {data} = await axios.post(`/user/${state}`, {name, email, password});
             console.log("This is a bug fix test", data);
 
             if(data.success){
