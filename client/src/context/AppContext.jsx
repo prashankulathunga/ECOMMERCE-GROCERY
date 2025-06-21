@@ -36,6 +36,22 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
+  // fetch user auth status, user data and cart items
+  const fetchUser = async () => {
+    try {
+      const { data } = await axios.get("/user/is-auth");
+
+      if (data.success) {
+        setUser(data.user);
+        setCartItems(data.user.cart);
+      } else {
+        setUser(null);
+      }
+    } catch (error) {
+      setUser(null);
+    }
+  };
+
   // add product to cart
   const addToCart = (itemId) => {
     let cartData = structuredClone(cartItems);
@@ -95,7 +111,26 @@ export const AppContextProvider = ({ children }) => {
 
   useEffect(() => {
     fetchProduct();
-  }, [product]);
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
+    const updateCartItems = async () => {
+      try {
+        const { data } = await axios.post("/cart/update", { cartItems });
+        if (!data.success) {
+          toast.error(error.message);
+        }
+      } catch (error) {
+        console.log(error.message);
+        toast.error(error.message);
+      }
+    };
+
+    if (user) {
+      updateCartItems();
+    }
+  }, [cartItems]);
 
   const value = {
     navigate,

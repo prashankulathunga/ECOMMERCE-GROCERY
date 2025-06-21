@@ -45,6 +45,6 @@ app.listen(port, ()=>{
  app.use('/api/user', UserRoute);
  app.use('/api/seller', SellerRoute);
  app.use('/api/product', ProductRoute);
- app.use('/api/update', CartRoute);
+ app.use('/api/cart', CartRoute);
  app.use('/api/address', AddressRoute);
  app.use('/api/order', OrderRoute);

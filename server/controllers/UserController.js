@@ -94,7 +94,6 @@ export const login = async (req, res) => {
 export const checkAuth = async (req, res) => {
   try {
     const userId = req.userId;
-    console.log("userId:", userId);
     const user = await User.findById(userId).select("-password");
     return res.status(200).json({ success: true, user });
   } catch (error) {

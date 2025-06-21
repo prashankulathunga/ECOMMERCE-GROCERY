@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useAppContext } from "../context/AppContext";
 import { assets, dummyAddress } from "../assets/assets";
+import toast from "react-hot-toast";
 
 const Cart = () => {
   const [showAddress, setShowAddress] = useState(false);
   const [cartArray, setCartArray] = useState([]);
-  const [address, setAddress] = useState(dummyAddress);
-  const [selectedAddress, setSelectedAddress] = useState(dummyAddress[0]);
+  const [address, setAddress] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("COD");
 
   const {
@@ -17,6 +18,7 @@ const Cart = () => {
     updateCart,
     getCartTotal,
     navigate,
+    user, axios
   } = useAppContext();
 
   const cardData = () => {
@@ -29,6 +31,31 @@ const Cart = () => {
     setCartArray(dataArray);
   };
 
+  const getUserAddress = async () => {
+    try {
+      const { data } = await axios.get("/address/get");
+      console.log(data)
+  
+      if (data.success) {
+        console.log('Hello I am test address', data.addresses);
+        setAddress(data.addresses);
+  
+        if (data.addresses.length > 0) {
+          setSelectedAddress(data.addresses[0]);
+        } else {
+          setSelectedAddress(null);
+          toast.error("No address found");
+        }
+      } else {
+        toast.error("Invalid address data");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+  
+  
+
   const handleCheckout = async () => {};
 
   useEffect(() => {
@@ -36,6 +63,14 @@ const Cart = () => {
       cardData();
     }
   }, [product, cartItems]);
+
+  useEffect(() => {
+    console.log("User changed:", user);
+    if (user) {
+      getUserAddress();
+    }
+  }, [user]);
+  
 
   return (
     <div className="flex flex-col md:flex-row sm:mt-16 mt-8">

@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { assets } from "../assets/assets";
 import { useState } from "react";
+import { useAppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
 
 const InputField = ({ type, placeholder, name, handleChange, address }) => (
   <input
@@ -9,38 +11,56 @@ const InputField = ({ type, placeholder, name, handleChange, address }) => (
     placeholder={placeholder}
     onChange={handleChange}
     name={name}
-    value={address[name]}   
+    value={address[name]}
     required
   />
 );
 
 function AddAddress() {
+  const { axios, user, navigate } = useAppContext();
 
+  const [address, setAddress] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    state: "",
+    zipcode: "",
+    country: "",
+    phone: "",
+  });
 
-    const [address, setAddress] = useState({
-      firstName: "",
-      lastName: "",
-      email: "",
-      street: "",
-      city: "",
-      state: "",
-      zipcode: "",
-      country: "",
-      phone: "",
-    });
-
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
+
+    try {
+      console.log(address);
+
+      const { data } = await axios.post("/address/add", { address });
+
+      if (data.success) {
+        toast.success(data.message);
+        navigate("/cart");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
-  const handleChange = (e)=>{
-    const {name, value} = e.target;
-    setAddress((prevAddress)=>({
-        ...prevAddress,
-        [name]: value
-    }))
-  }
+  useEffect(() => {
+    if (!user) {
+      navigate("/cart");
+    }
+  }, []);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setAddress((prevAddress) => ({
+      ...prevAddress,
+      [name]: value,
+    }));
+  };
 
   return (
     <div>
@@ -53,22 +73,65 @@ function AddAddress() {
           <div className="flex-1 max-w-md">
             <form className="space-y-3 mt-6 text-sm" onSubmit={onSubmitHandler}>
               <div className="grid grid-cols-2 gap-4">
-                <InputField type="text" placeholder="First Name" name="firstName" handleChange={handleChange} address={address}  />
-                <InputField type="text" placeholder="Last Name" name="lastName" handleChange={handleChange} address={address}  />
+                <InputField
+                  type="text"
+                  placeholder="First Name"
+                  name="firstName"
+                  handleChange={handleChange}
+                  address={address}
+                />
+                <InputField
+                  type="text"
+                  placeholder="Last Name"
+                  name="lastName"
+                  handleChange={handleChange}
+                  address={address}
+                />
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <InputField type="text" placeholder="E mail" name="email" handleChange={handleChange} address={address}  />
-                <InputField type="text" placeholder="State" name="state" handleChange={handleChange} address={address}  />
+                <InputField
+                  type="text"
+                  placeholder="E mail"
+                  name="email"
+                  handleChange={handleChange}
+                  address={address}
+                />
+                <InputField
+                  type="text"
+                  placeholder="State"
+                  name="state"
+                  handleChange={handleChange}
+                  address={address}
+                />
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <InputField type="number" placeholder="Zip Code" name="zipCode" handleChange={handleChange} address={address}  />
-                <InputField type="text" placeholder="Country" name="country" handleChange={handleChange} address={address}  />
+                <InputField
+                  type="number"
+                  placeholder="Zip Code"
+                  name="zipcode"
+                  handleChange={handleChange}
+                  address={address}
+                />
+                <InputField
+                  type="text"
+                  placeholder="Country"
+                  name="country"
+                  handleChange={handleChange}
+                  address={address}
+                />
               </div>
 
-              <InputField type="text" placeholder="Phone Number" name="phone" handleChange={handleChange} address={address}  />
+              <InputField
+                type="text"
+                placeholder="Phone Number"
+                name="phone"
+                handleChange={handleChange}
+                address={address}
+              />
 
-              <button className="w-full mt-6 bg-primary hover:bg-primary-dull text-white py-3 transition cursor-pointer uppercase">Save Address</button>
-
+              <button className="w-full mt-6 bg-primary hover:bg-primary-dull text-white py-3 transition cursor-pointer uppercase">
+                Save Address
+              </button>
             </form>
           </div>
           <img
