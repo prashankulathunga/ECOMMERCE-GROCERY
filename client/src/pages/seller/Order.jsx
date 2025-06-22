@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { assets, dummyOrders } from '../../assets/assets';
+import { useAppContext } from '../../context/AppContext';
 
 function Order() {
-    const boxIcon = "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/e-commerce/boxIcon.svg"
 
     const [orders, setOrders] = useState([]);
+    const {axios, isSeller} = useAppContext();
 
     const fetchOrders = async()=>{
-        setOrders(dummyOrders);
+        try {
+            const {data} = await axios.get("/order/seller");
+            if(data.success){
+                setOrders(data.orders);
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
     }
 
     useEffect(()=>{
         fetchOrders();
-    }, [])
+    }, [isSeller])
 
 
     return (

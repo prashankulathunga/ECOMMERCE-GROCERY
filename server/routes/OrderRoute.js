@@ -6,7 +6,7 @@ import authSeller from "../middlewares/AuthSeller.js";
 const router = express.Router();
 
 router.post('/cod', authUser, placeOrderCOD);
-router.post('/user', authUser, getUserOrders);
+router.get('/user', authUser, getUserOrders);
 router.get('/seller', authSeller, getAllOrders);
 
 export default router;

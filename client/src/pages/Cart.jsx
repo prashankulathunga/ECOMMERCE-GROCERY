@@ -18,7 +18,9 @@ const Cart = () => {
     updateCart,
     getCartTotal,
     navigate,
-    user, axios
+    user,
+    axios,
+    setCartItems
   } = useAppContext();
 
   const cardData = () => {
@@ -34,12 +36,12 @@ const Cart = () => {
   const getUserAddress = async () => {
     try {
       const { data } = await axios.get("/address/get");
-      console.log(data)
-  
+      console.log(data);
+
       if (data.success) {
-        console.log('Hello I am test address', data.addresses);
+        console.log("Hello I am test address", data.addresses);
         setAddress(data.addresses);
-  
+
         if (data.addresses.length > 0) {
           setSelectedAddress(data.addresses[0]);
         } else {
@@ -53,10 +55,35 @@ const Cart = () => {
       toast.error(error.message);
     }
   };
-  
-  
 
-  const handleCheckout = async () => {};
+  const handleCheckout = async () => {
+    try {
+      if (!selectedAddress) {
+        return toast.error("Please select an address");
+      }
+
+      // place order in COD
+      if (paymentMethod === "COD") {
+        const { data } = await axios.post("/order/cod", {
+          items: cartArray.map((item) => ({
+            product: item._id,
+            quantity: item.quantity,
+          })),
+          address: selectedAddress._id,
+        });
+
+        if (data.success) {
+          toast.success(data.message);
+          setCartItems([]);
+          navigate("/my-orders");
+        } else {
+          toast.error(error.message);
+        }
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   useEffect(() => {
     if (product.length && cartItems) {
@@ -70,7 +97,6 @@ const Cart = () => {
       getUserAddress();
     }
   }, [user]);
-  
 
   return (
     <div className="flex flex-col md:flex-row sm:mt-16 mt-8">
