@@ -79,6 +79,20 @@ const Cart = () => {
         } else {
           toast.error(error.message);
         }
+      }else{
+        const { data } = await axios.post("/order/stripe", {
+          items: cartArray.map((item) => ({
+            product: item._id,
+            quantity: item.quantity,
+          })),
+          address: selectedAddress._id,
+        });
+
+        if (data.success) {
+          window.location.replace(data.url)
+        } else {
+          toast.error(error.message);
+        }
       }
     } catch (error) {
       toast.error(error.message);
