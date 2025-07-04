@@ -1,4 +1,4 @@
-# 🛒 Grocery Delivery Website
+## 🛒 Grocery Delivery Website
 
 A fully functional **Grocery Delivery Website** built using the MERN stack (MongoDB, Express, React, Node.js), with integrated Stripe payment gateway and deployed for free.
 
